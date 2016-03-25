@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+
+    <!-- Bootstrap -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+      html,body{
+        width:100%;
+        height:100%;
+      }
+      #map{
+        width: 100%;
+        height:100%;
+      }
+      #intro{
+        display:none;
+        width:100%;
+        height:100%;
+        align-items: center;
+        justify-content: center;
+      }
+      #intoinner{
+        max-width: 50%;
+      }
+    </style>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+
+
+    <div id='map'>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+
+
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script>
+        function getQueryVariable(variable) {
+          var query = window.location.search.substring(1);
+          var vars = query.split('&');
+          for (var i = 0; i < vars.length; i++) {
+              var pair = vars[i].split('=');
+              if (decodeURIComponent(pair[0]) == variable) {
+                  return decodeURIComponent(pair[1]);
+              }
+          }
+          console.log('Query variable %s not found', variable);
+        }
+
+        $(function(){
+          // var viz = 'https://team.cartodb.com/u/stuartlynn/api/v2/viz/08aff2b8-f2a9-11e5-8771-0e3ff518bd15/viz.json';
+          // var historic = 'http://mapwarper.net/maps/tile/11489/{z}/{x}/{y}.png';
+          var viz = getQueryVariable('viz');
+          var historic = getQueryVariable('historic');
+          console.log(viz)
+          console.log(historic)
+          if(viz && historic){
+            cartodb.createVis("map", viz).done(function(vis, layers) {
+              var nativeMap  = vis.getNativeMap();
+              L.tileLayer(historic).addTo(nativeMap);
+            });
+          }
+          else{
+            $("#intro").css({'display' : 'flex'})
+          }
+        })
+    </script>
+  </body>
+</html>
