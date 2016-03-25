@@ -68,12 +68,16 @@
           // var historic = 'http://mapwarper.net/maps/tile/11489/{z}/{x}/{y}.png';
           var viz = getQueryVariable('viz');
           var historic = getQueryVariable('historic');
+          var opacity = getQueryVariable('opacity');
+          if (!opacity){
+            opacity =0.8;
+          }
           console.log(viz)
           console.log(historic)
           if(viz && historic){
             cartodb.createVis("map", viz).done(function(vis, layers) {
               var nativeMap  = vis.getNativeMap();
-              L.tileLayer(historic).addTo(nativeMap);
+              L.tileLayer(historic, {opacity: opacity}).addTo(nativeMap);
             });
           }
           else{
